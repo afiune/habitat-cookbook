@@ -28,7 +28,7 @@ class Chef
       class Hart < Chef::Provider::Package
         # ~FC113
 
-        use_multipackage_api
+        #use_multipackage_api
 
         provides :hab_package
 
@@ -69,7 +69,7 @@ class Chef
         end
 
         def install_package(names, versions)
-          names.zip(versions).map do |n, v|
+          Array(names).zip(Array(versions)).map do |n, v|
             opts = ['pkg', 'install', '--channel', new_resource.channel, '--url', new_resource.bldr_url]
             opts += ['--auth', new_resource.auth_token] if new_resource.auth_token
             opts += ["#{strip_version(n)}/#{v}", new_resource.options]
@@ -83,7 +83,7 @@ class Chef
 
         def remove_package(_name, _version)
           raise 'It is too dangerous to :remove packages with the hab_package resource right now. This functionality should be deferred to the hab cli.'
-          names.zip(versions).map do |n, v| # rubocop:disable Lint/UnreachableCode
+          Array(names).zip(Array(versions)).map do |n, v| # rubocop:disable Lint/UnreachableCode
             # FIXME: `hab pkg uninstall` would be a lot safer here
             path = hab('pkg', 'path', "#{n}/#{v}").stdout
             Chef::Log.warn 'semantics of :remove will almost certainly change in the future'
@@ -110,17 +110,17 @@ class Chef
         end
 
         def platform_target
-          if platform_family?('windows')
-            'target=x86_64-windows'
-          elsif platform_family?('rhel') && node['platform_version'].to_f < 6.0
-            'target=x86_64-linux-kernel2'
-          elsif platform_family?('centos') && node['platform_version'].to_f < 6.0
-            'target=x86_64-linux-kernel2'
-          elsif platform_family?('suse') && node['platform_version'].to_f < 6.0
-            'target=x86_64-linux-kernel2'
-          else
+          #if platform_family?('windows')
+            #'target=x86_64-windows'
+          #elsif platform_family?('rhel') && node['platform_version'].to_f < 6.0
+            #'target=x86_64-linux-kernel2'
+          #elsif platform_family?('centos') && node['platform_version'].to_f < 6.0
+            #'target=x86_64-linux-kernel2'
+          #elsif platform_family?('suse') && node['platform_version'].to_f < 6.0
+            #'target=x86_64-linux-kernel2'
+          #else
             ''
-          end
+          #end
         end
 
         def depot_package(name, version = nil)
@@ -165,7 +165,7 @@ class Chef
         end
 
         def installed_version(ident)
-          hab('pkg', 'path', ident).stdout.chomp.split(platform_family?('windows') ? '\\' : '/')[-2..-1].join('/')
+          hab('pkg', 'path', ident).stdout.chomp.split('/')[-2..-1].join('/')
         rescue Mixlib::ShellOut::ShellCommandFailed
           nil
         end

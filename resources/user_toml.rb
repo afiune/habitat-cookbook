@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require 'toml'
 
 resource_name :hab_user_toml
 
@@ -23,6 +22,8 @@ property :config, Mash,
 property :service_name, String, name_property: true, desired_state: false
 
 action :create do
+  require 'toml'
+
   directory config_directory do
     mode '0755'
     owner root_owner

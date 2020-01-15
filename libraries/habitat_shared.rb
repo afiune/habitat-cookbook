@@ -26,11 +26,11 @@ module Habitat
     end
 
     def hab_launcher_version
-      if platform_family?('windows')
-        WINDOWS_LAUNCHER_VERSION
-      else
+      #if platform_family?('windows')
+        #WINDOWS_LAUNCHER_VERSION
+      #else
         LINUX_LAUNCHER_VERSION
-      end
+      #end
     end
 
     def hab_windows_service_version
@@ -39,16 +39,19 @@ module Habitat
 
     def hab(*command)
       # Windows shell_out does not support arrays, so manually cleaning and joining
-      hab_cmd = if platform_family?('windows')
-                  (['hab'] + command).flatten.compact.join(' ')
-                else
-                  (['hab'] + command)
-                end
+      #hab_cmd = if platform_family?('windows')
+                  #(['hab'] + command).flatten.compact.join(' ')
+                #else
+                  #(['hab'] + command)
+                #end
+      hab_cmd = (['hab'] + command)
 
       if Gem::Requirement.new('>= 14.3.20').satisfied_by?(Gem::Version.new(Chef::VERSION))
         shell_out!(hab_cmd)
       else
-        shell_out_compact!(hab_cmd)
+        shell_out!(hab_cmd.join(' '))
+        # original
+        #shell_out_compact!(hab_cmd)
       end
     rescue Errno::ENOENT
       Chef::Log.fatal("'hab' binary not found, use the 'hab_install' resource to install it first")

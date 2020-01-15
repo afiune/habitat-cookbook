@@ -160,3 +160,23 @@ action_class do
     opts.map(&:split).flatten.compact
   end
 end
+
+def svc_options
+  opts = []
+
+  # certain options are only valid for specific `hab svc` subcommands.
+  #case action
+  #when :load
+    #opts.push(*new_resource.bind.map { |b| "--bind #{b}" }) if new_resource.bind
+    #opts << "--binding-mode #{new_resource.binding_mode}"
+    #opts << "--url #{new_resource.bldr_url}" if new_resource.bldr_url
+    #opts << "--channel #{new_resource.channel}" if new_resource.channel
+    #opts << "--group #{new_resource.service_group}" if new_resource.service_group
+    #opts << "--strategy #{new_resource.strategy}" if new_resource.strategy
+    #opts << "--topology #{new_resource.topology}" if new_resource.topology
+  #end
+
+  #opts << "--remote-sup #{new_resource.remote_sup}" if new_resource.remote_sup
+
+  opts.map(&:split).flatten.compact
+end

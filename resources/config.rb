@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require 'toml'
 require 'net/http'
 require 'json'
 
@@ -51,6 +50,8 @@ action :apply do
     opts << ['--remote-sup', new_resource.remote_sup] if new_resource.remote_sup
     opts << ['--user', new_resource.user] if new_resource.user
 
+
+    require 'toml'
     tempfile = Tempfile.new(['hab_config', '.toml'])
     begin
       tempfile.write(TOML::Generator.new(new_resource.config).body)

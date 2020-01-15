@@ -45,6 +45,7 @@ vendor/
 Policyfile.lock.json
 Cheffile.lock
 .librarian/
+berks-cookbooks/
 
 # vagrant stuff
 .vagrant/

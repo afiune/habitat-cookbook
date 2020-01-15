@@ -165,3 +165,12 @@ action_class do
     cmd.join(' ')
   end
 end
+
+def hab_path
+  '/bin/hab'
+end
+
+def hab_command
+  cmd = ["bash #{Chef::Config[:file_cache_path]}/hab-install.sh", "-v #{hab_version}"]
+  cmd.join(' ')
+end
